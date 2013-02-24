@@ -2,8 +2,7 @@
 
 require 'rubygems'
 require 'pit'
-require 'net/imap'
-require 'kconv'
+require 'gmail'
 
 class Gunosy2Feed
   def initialize()
@@ -21,34 +20,22 @@ class Gunosy2Feed
 
   # Get latest gunosy mail from gmail via IMAP
   def getLatestMailFromGunosy()
-    imap = Net::IMAP.new(@pit['host'], @pit['port'].to_i, @pit['use_ssl'])
-    imap.login(@pit['login'], @pit['password'])
-
-    imap.select('Inbox')
-    exists = imap.responses['EXISTS'][-1].to_i
-    return nil if exists < 1
-
-    imap.fetch(1..exists, ['ENVELOPE', 'RFC822.TEXT']).each do |f|
-      from = f.attr['ENVELOPE'].from.first
-        if (from.mailbox == 'noreply' and from.host == 'gunosy.com')
-          return f
-        end
+    Gmail.connect(@pit['login'], @pit['password']) do |gmail|
+      return gmail.mailbox('Gunosy').emails.first
     end
-
     return nil
   end
 
   # Parse mail body
-  def parse(message)
-    body = message.attr['RFC822.TEXT'] ? message.attr['RFC822.TEXT'].toutf8 : ''
-    puts body
+  def parse(email)
+    puts email.message.html_part.decode_body
   end
 
   # Output as feed
 end
 
 g2f = Gunosy2Feed.new
-message = g2f.getLatestMailFromGunosy
-if message
-  g2f.parse(message)
+email = g2f.getLatestMailFromGunosy
+if email
+  g2f.parse(email)
 end
