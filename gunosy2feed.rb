@@ -3,6 +3,7 @@
 require 'rubygems'
 require 'pit'
 require 'gmail'
+require 'nokogiri'
 
 class Gunosy2Feed
   def initialize()
@@ -28,7 +29,21 @@ class Gunosy2Feed
 
   # Parse mail body
   def parse(email)
-    puts email.message.html_part.decode_body
+    html = email.message.html_part.decode_body
+    doc = Nokogiri::HTML(html)
+    entries = []
+    doc.xpath('//table[3]//tr/td/div').each do |div|
+      a = div.xpath('./p[1]/a[1]').first
+      title, url = a.text, a['href']
+
+      img = div.xpath('./div[1]//img[1]').first
+      thumb_url = img ? img['src'] : nil
+
+      p = div.xpath('./p[2]').first
+      desc = p.text.strip
+
+      puts title, url, thumb_url, desc
+    end
   end
 
   # Output as feed
