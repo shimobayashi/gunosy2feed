@@ -20,7 +20,7 @@ class Gunosy2Feed
     )
   end
 
-  # Get latest gunosy mail from gmail via IMAP
+  # Get latest mail labeled 'Gunosy' from gmail via IMAP
   def getLatestMailFromGunosy()
     Gmail.connect(@pit['login'], @pit['password']) do |gmail|
       return gmail.mailbox('Gunosy').emails.first
