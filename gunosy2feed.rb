@@ -60,7 +60,7 @@ class Gunosy2Feed
     rss = RSS::Maker.make('2.0') do |rss|
       rss.channel.title = "Gunosy2Feed"
       rss.channel.description = "Entries from Gunosy"
-      rss.channel.link = 'http://example.com/'
+      rss.channel.link = 'https://github.com/shimobayashi/gunosy2feed'
 
       for entry in entries
         item = rss.items.new_item
