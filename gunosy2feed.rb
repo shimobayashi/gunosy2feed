@@ -23,7 +23,7 @@ class Gunosy2Feed
   # Get latest mail labeled 'Gunosy' from gmail via IMAP
   def getLatestMailFromGunosy()
     Gmail.connect(@pit['login'], @pit['password']) do |gmail|
-      return gmail.mailbox('Gunosy').emails.first
+      return gmail.mailbox('Gunosy').emails.last
     end
     return nil
   end
