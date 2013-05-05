@@ -34,7 +34,7 @@ class Gunosy2Feed
     doc = Nokogiri::HTML(html)
     entries = []
 
-    doc.xpath('//table[3]//tr/td/div').each do |div|
+    doc.xpath('//table[2]//tr/td/div').each do |div|
       a = div.xpath('./p[1]/a[1]').first
       title, url = a.text, a['href']
 
