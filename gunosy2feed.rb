@@ -66,7 +66,7 @@ class Gunosy2Feed
         item = rss.items.new_item
         item.title = entry[:title]
         item.link = entry[:url]
-        item.description = (entry[:thumb_url] ? %Q(<img src="#{entry[:thumb_url]}" />) : '') + %Q(<p>#{entry[:desc]}</p>)
+        item.description = (entry[:thumb_url] ? %Q(<img src="#{entry[:thumb_url]}" height="250" />) : '') + %Q(<p>#{entry[:desc]}</p>)
         item.date = Time.now
       end
     end
